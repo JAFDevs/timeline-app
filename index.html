@@ -304,6 +304,61 @@
         .paused-badge.visible {
             opacity: 1;
         }
+
+        /* Edit Mode Styles */
+        .point-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .point-item:hover .point-actions {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            box-shadow: none;
+            margin: 0;
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--primary);
+            transform: none;
+        }
+
+        .edit-inputs {
+            display: none;
+            flex: 1;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .point-item.editing .point-content,
+        .point-item.editing .point-actions {
+            display: none;
+        }
+
+        .point-item.editing .edit-inputs {
+            display: flex;
+        }
+
+        .edit-inputs input {
+            padding: 8px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 
@@ -372,7 +427,7 @@
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            Export JSON
+            Export TXT
         </button>
         <button class="danger" onclick="deleteCurrentViewed()">Delete Timeline</button>
         <button class="secondary" onclick="showHome()">Back</button>
@@ -445,6 +500,94 @@
             return Math.floor((elapsedTime + (Date.now() - startTime)) / 1000);
         }
 
+        // --- EDITING LOGIC ---
+        function getPointHtml(point) {
+            const label = point.label || (point.note ? "Note" : "Marker");
+            const note = point.note || "";
+
+            return `
+                <div class="point-time">${point.time}</div>
+                <div class="point-content">
+                    <div class="point-label">${label}</div>
+                    ${note ? `<div class="point-note">${note}</div>` : ''}
+                </div>
+                <div class="point-actions">
+                    <button class="icon-btn" onclick="editPoint(${point.id})">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                </div>
+                <div class="edit-inputs">
+                    <input type="text" class="edit-label" value="${label}" placeholder="Label">
+                    <input type="text" class="edit-note" value="${note}" placeholder="Note">
+                    <button class="icon-btn" onclick="savePoint(${point.id})" style="color:var(--success)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </button>
+                    <button class="icon-btn" onclick="cancelEdit(${point.id})" style="color:var(--danger)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            `;
+        }
+
+        function editPoint(id) {
+            const el = document.getElementById(`point-${id}`);
+            if (el) el.classList.add('editing');
+        }
+
+        function cancelEdit(id) {
+            const el = document.getElementById(`point-${id}`);
+            if (el) el.classList.remove('editing');
+        }
+
+        function savePoint(id) {
+            const el = document.getElementById(`point-${id}`);
+            if (!el) return;
+
+            const newLabel = el.querySelector('.edit-label').value.trim() || "Marker";
+            const newNote = el.querySelector('.edit-note').value.trim();
+
+            // Update Data
+            if (document.getElementById('recordScreen').classList.contains('active')) {
+                // In Recording
+                const p = currentPoints.find(item => item.id === id);
+                if (p) {
+                    p.label = newLabel;
+                    p.note = newNote;
+                }
+            } else if (viewId) {
+                // In History
+                const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+                const timeline = history.find(t => t.id === viewId);
+                if (timeline) {
+                    const p = timeline.points.find(item => item.id === id);
+                    if (p) {
+                        p.label = newLabel;
+                        p.note = newNote;
+                        localStorage.setItem('timelines', JSON.stringify(history));
+                    }
+                }
+            }
+
+            // Update UI
+            el.classList.remove('editing');
+            el.querySelector('.point-label').innerText = newLabel;
+
+            const noteEl = el.querySelector('.point-note');
+            if (newNote) {
+                if (noteEl) {
+                    noteEl.innerText = newNote;
+                } else {
+                    const newNoteDiv = document.createElement('div');
+                    newNoteDiv.className = 'point-note';
+                    newNoteDiv.innerText = newNote;
+                    el.querySelector('.point-content').appendChild(newNoteDiv);
+                }
+            } else if (noteEl) {
+                noteEl.remove();
+            }
+        }
+
+
         function updateTimer() {
             const diff = getTotalSeconds();
             const m = Math.floor(diff / 60).toString().padStart(2, '0');
@@ -465,6 +608,7 @@
             const note = noteInput.value.trim();
 
             const point = {
+                id: Date.now(), // Unique ID for editing
                 time: `${m}:${s}`,
                 label: label,
                 note: note // Can be empty
@@ -475,13 +619,8 @@
             // Add to UI immediately
             const div = document.createElement('div');
             div.className = 'point-item';
-            div.innerHTML = `
-                <div class="point-time">${point.time}</div>
-                <div class="point-content">
-                    <div class="point-label">${point.label}</div>
-                    ${point.note ? `<div class="point-note">${point.note}</div>` : ''}
-                </div>
-            `;
+            div.id = `point-${point.id}`;
+            div.innerHTML = getPointHtml(point);
             document.getElementById('currentPoints').prepend(div);
 
             // Clear inputs, keep focus on label for rapid entry or switch? 
@@ -570,22 +709,28 @@
             const detailList = document.getElementById('detailList');
             detailList.innerHTML = "";
 
+            // Assign IDs to legacy points if missing (persist them later if modified, or just for view now)
+            // Ideally we should persist IDs back to storage if we generated them, 
+            // but for simplicity let's just use existing IDs or generate temp ones.
+            // Actually, let's update storage if we find missing IDs so editing works reliably.
+            let pointsUpdated = false;
+
             item.points.forEach(p => {
+                if (!p.id) {
+                    p.id = Date.now() + Math.random(); // Ensure uniqueness
+                    pointsUpdated = true;
+                }
+
                 const div = document.createElement('div');
                 div.className = 'point-item';
-                // Backward compatibility for old points lacking label
-                const label = p.label || (p.note ? "Note" : "Marker");
-                const note = p.label ? p.note : (p.note !== "Marked Point" ? p.note : "");
-
-                div.innerHTML = `
-                    <div class="point-time">${p.time}</div>
-                    <div class="point-content">
-                        <div class="point-label">${label}</div>
-                        ${note ? `<div class="point-note">${note}</div>` : ''}
-                    </div>
-                `;
+                div.id = `point-${p.id}`;
+                div.innerHTML = getPointHtml(p);
                 detailList.appendChild(div);
             });
+
+            if (pointsUpdated) {
+                localStorage.setItem('timelines', JSON.stringify(history));
+            }
 
             showScreen('detailScreen');
         }
