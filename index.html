@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,71 +8,391 @@
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #f4f4f5; --card: #ffffff; --text: #18181b; --primary: #2563eb; --danger: #ef4444; }
-        @media (prefers-color-scheme: dark) { :root { --bg: #18181b; --card: #27272a; --text: #f4f4f5; } }
-        
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
-        h1, h2 { margin: 0 0 15px 0; }
-        button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; touch-action: manipulation; }
-        button.secondary { background: var(--card); color: var(--text); border: 1px solid #555; }
-        button.danger { background: var(--danger); }
-        
-        .screen { display: none; flex-direction: column; height: 100%; }
-        .active { display: flex; }
-        
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #e2e8f0;
+            --radius: 16px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --card: #1e293b;
+                --text: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --primary: #3b82f6;
+                --primary-hover: #2563eb;
+                --border: #334155;
+                --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        h1,
+        h2 {
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        /* Buttons */
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 12px;
+            transition: transform 0.1s ease, background 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        button.secondary {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        button.secondary:hover {
+            background: var(--bg);
+        }
+
+        button.danger {
+            background: var(--danger);
+        }
+
+        button.danger:hover {
+            background: var(--danger-hover);
+        }
+
+        button.warning {
+            background: var(--warning);
+            color: #fff;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* List Styles */
-        .timeline-card { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .timeline-header { display: flex; justify-content: space-between; align-items: center; }
-        .timestamp { font-size: 0.85em; opacity: 0.7; }
-        
+        .timeline-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .timeline-card:active {
+            transform: scale(0.99);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .timestamp {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* Checkbox for selection */
+        .select-mode .timeline-card {
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .select-checkbox {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+
+        .select-mode .select-checkbox {
+            display: block;
+        }
+
+
         /* Recording Styles */
-        #timerDisplay { font-size: 4em; font-weight: 800; text-align: center; margin: 40px 0; font-variant-numeric: tabular-nums; }
-        input[type="text"] { padding: 15px; border-radius: 12px; border: 1px solid #ccc; font-size: 16px; width: 100%; box-sizing: border-box; margin-bottom: 10px; background: var(--card); color: var(--text); }
-        
-        .scroll-area { flex: 1; overflow-y: auto; margin-bottom: 20px; }
-        .point-item { border-left: 2px solid var(--primary); padding-left: 10px; margin-bottom: 10px; }
+        #timerDisplay {
+            font-size: 5em;
+            font-weight: 800;
+            text-align: center;
+            margin: 30px 0;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.05em;
+            color: var(--text);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        input[type="text"] {
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--card);
+            color: var(--text);
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+            /* For scrollbar */
+        }
+
+        /* Custom Scrollbar */
+        .scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background-color: var(--border);
+            border-radius: 10px;
+        }
+
+        .point-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .point-time {
+            font-weight: 600;
+            color: var(--primary);
+            font-feature-settings: "tnum";
+            min-width: 45px;
+        }
+
+        .point-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .point-label {
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .point-note {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Status Badge */
+        .paused-badge {
+            background: var(--warning);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            vertical-align: middle;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .paused-badge.visible {
+            opacity: 1;
+        }
     </style>
 </head>
+
 <body>
 
+    <!-- Home Screen -->
     <div id="homeScreen" class="screen active">
-        <h1>My Timelines</h1>
-        <button onclick="startNewSession()">+ Start New Timeline</button>
-        <div id="historyList" class="scroll-area">
-            </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h1>Timelines</h1>
+        </div>
+
+        <button onclick="startNewSession()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Start New Timeline
+        </button>
+
+        <div id="historyList" class="scroll-area"></div>
     </div>
 
+    <!-- Record Screen -->
     <div id="recordScreen" class="screen">
-        <div id="timerDisplay">00:00</div>
-        <input type="text" id="sessionName" placeholder="Name this session (e.g. Interview)">
-        
-        <div class="scroll-area" id="currentPoints">
-            </div>
+        <div style="position:relative;">
+            <div id="timerDisplay">00:00</div>
+            <div id="pauseIndicator" class="paused-badge" style="position:absolute; top: 0; right: 0; display:none;">
+                PAUSED</div>
+        </div>
 
-        <input type="text" id="pointNote" placeholder="Note (optional)">
-        <button onclick="addPoint()">Mark Point</button>
-        <button class="danger" onclick="stopSession()">Stop & Save</button>
+        <input type="text" id="sessionName" placeholder="Session Name (e.g. Interview)" class="input-group">
+
+        <div class="scroll-area" id="currentPoints"></div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="pointLabel" placeholder="Label (e.g. Bug)" style="flex: 1;">
+            <input type="text" id="pointNote" placeholder="Note (Optional)" style="flex: 2;">
+        </div>
+
+        <button onclick="addPoint()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Mark Point
+        </button>
+
+        <div style="display: flex; gap: 10px;">
+            <button id="pauseBtn" class="warning" onclick="togglePause()" style="flex: 1;">Pause</button>
+            <button class="danger" onclick="stopSession()" style="flex: 1;">Stop</button>
+        </div>
     </div>
 
+    <!-- Detail Screen -->
     <div id="detailScreen" class="screen">
         <h2 id="detailTitle">Title</h2>
         <div class="scroll-area" id="detailList"></div>
-        <button class="secondary" onclick="showHome()">Back</button>
+
+        <button class="secondary" onclick="exportTimeline()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export JSON
+        </button>
         <button class="danger" onclick="deleteCurrentViewed()">Delete Timeline</button>
+        <button class="secondary" onclick="showHome()">Back</button>
     </div>
 
     <script>
         // --- DATA & STATE ---
         let startTime = 0;
+        let elapsedTime = 0; // Time accumulated before current resume
         let timerInterval;
+        let isPaused = false;
         let currentPoints = [];
-        let viewId = null; // ID of the timeline currently being viewed
+        let viewId = null;
 
         // --- NAVIGATION ---
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            setTimeout(() => {
+                document.getElementById(id).classList.add('active');
+            }, 50); // Slight delay for animation reset
         }
 
         function showHome() {
@@ -82,53 +403,109 @@
         // --- RECORDING LOGIC ---
         function startNewSession() {
             startTime = Date.now();
+            elapsedTime = 0;
+            isPaused = false;
             currentPoints = [];
+
             document.getElementById('sessionName').value = "";
             document.getElementById('currentPoints').innerHTML = "";
             document.getElementById('timerDisplay').innerText = "00:00";
-            
+            document.getElementById('timerDisplay').style.opacity = "1";
+            document.getElementById('pauseBtn').innerText = "Pause";
+            document.getElementById('pauseIndicator').classList.remove('visible');
+
+            clearInterval(timerInterval);
             timerInterval = setInterval(updateTimer, 1000);
             showScreen('recordScreen');
         }
 
+        function togglePause() {
+            if (isPaused) {
+                // RESUME
+                startTime = Date.now(); // Reset start time to now
+                timerInterval = setInterval(updateTimer, 1000);
+                document.getElementById('pauseBtn').innerText = "Pause";
+                document.getElementById('timerDisplay').style.opacity = "1";
+                // document.getElementById('pauseIndicator').style.display = 'none';
+            } else {
+                // PAUSE
+                clearInterval(timerInterval);
+                elapsedTime += Date.now() - startTime; // Accumulate elapsed time
+                document.getElementById('pauseBtn').innerText = "Resume";
+                document.getElementById('timerDisplay').style.opacity = "0.6";
+                // document.getElementById('pauseIndicator').style.display = 'block'; 
+            }
+            isPaused = !isPaused;
+        }
+
+        function getTotalSeconds() {
+            if (isPaused) {
+                return Math.floor(elapsedTime / 1000);
+            }
+            return Math.floor((elapsedTime + (Date.now() - startTime)) / 1000);
+        }
+
         function updateTimer() {
-            const diff = Math.floor((Date.now() - startTime) / 1000);
+            const diff = getTotalSeconds();
             const m = Math.floor(diff / 60).toString().padStart(2, '0');
             const s = (diff % 60).toString().padStart(2, '0');
             document.getElementById('timerDisplay').innerText = `${m}:${s}`;
         }
 
         function addPoint() {
+            const labelInput = document.getElementById('pointLabel');
             const noteInput = document.getElementById('pointNote');
-            const diff = Math.floor((Date.now() - startTime) / 1000);
+
+            const diff = getTotalSeconds();
             const m = Math.floor(diff / 60).toString().padStart(2, '0');
             const s = (diff % 60).toString().padStart(2, '0');
-            
+
+            // Allow default label if empty
+            const label = labelInput.value.trim() || "Marker";
+            const note = noteInput.value.trim();
+
             const point = {
                 time: `${m}:${s}`,
-                note: noteInput.value || "Marked Point"
+                label: label,
+                note: note // Can be empty
             };
-            
+
             currentPoints.push(point);
-            
+
             // Add to UI immediately
             const div = document.createElement('div');
             div.className = 'point-item';
-            div.innerHTML = `<strong>${point.time}</strong> - ${point.note}`;
+            div.innerHTML = `
+                <div class="point-time">${point.time}</div>
+                <div class="point-content">
+                    <div class="point-label">${point.label}</div>
+                    ${point.note ? `<div class="point-note">${point.note}</div>` : ''}
+                </div>
+            `;
             document.getElementById('currentPoints').prepend(div);
-            
-            noteInput.value = ""; // Clear input
+
+            // Clear inputs, keep focus on label for rapid entry or switch? 
+            // Better to clear note, maybe keep label? Let's clear both for now.
+            labelInput.value = "";
+            noteInput.value = "";
+            labelInput.focus();
         }
 
         function stopSession() {
             clearInterval(timerInterval);
-            const name = document.getElementById('sessionName').value || "Untitled Timeline";
+            // Ensure we capture final time accurately
+            if (!isPaused) {
+                elapsedTime += Date.now() - startTime;
+            }
+
+            const name = document.getElementById('sessionName').value.trim() || "Untitled Timeline";
             const date = new Date().toLocaleString();
-            
+
             const sessionData = {
                 id: Date.now(),
                 name: name,
                 date: date,
+                duration: getTotalSeconds(), // Save total duration in seconds
                 points: currentPoints
             };
 
@@ -147,7 +524,11 @@
             const history = JSON.parse(localStorage.getItem('timelines') || "[]");
 
             if (history.length === 0) {
-                list.innerHTML = "<p style='text-align:center; opacity:0.5;'>No timelines yet.</p>";
+                list.innerHTML = `
+                    <div style="text-align:center; padding: 40px 20px; opacity:0.5;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">⏱️</div>
+                        <p>No timelines yet. Start one above!</p>
+                    </div>`;
                 return;
             }
 
@@ -155,12 +536,24 @@
                 const card = document.createElement('div');
                 card.className = 'timeline-card';
                 card.onclick = () => viewTimeline(item.id);
+
+                // Format duration for display if available (legacy support)
+                let durationStr = "";
+                if (item.duration) {
+                    const m = Math.floor(item.duration / 60);
+                    const s = (item.duration % 60).toString().padStart(2, '0');
+                    durationStr = `${m}m ${s}s`;
+                }
+
                 card.innerHTML = `
                     <div class="timeline-header">
-                        <strong>${item.name}</strong>
-                        <span class="timestamp">${item.points.length} pts</span>
+                        <span class="timeline-title">${item.name}</span>
+                        <span style="font-weight:600; color:var(--primary);">${durationStr}</span>
                     </div>
-                    <div class="timestamp">${item.date}</div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.85em; color:var(--text-secondary);">
+                        <span>${item.date}</span>
+                        <span>${item.points.length} markers</span>
+                    </div>
                 `;
                 list.appendChild(card);
             });
@@ -170,7 +563,9 @@
             viewId = id;
             const history = JSON.parse(localStorage.getItem('timelines') || "[]");
             const item = history.find(t => t.id === id);
-            
+
+            if (!item) return;
+
             document.getElementById('detailTitle').innerText = item.name;
             const detailList = document.getElementById('detailList');
             detailList.innerHTML = "";
@@ -178,7 +573,17 @@
             item.points.forEach(p => {
                 const div = document.createElement('div');
                 div.className = 'point-item';
-                div.innerHTML = `<strong>${p.time}</strong>: ${p.note}`;
+                // Backward compatibility for old points lacking label
+                const label = p.label || (p.note ? "Note" : "Marker");
+                const note = p.label ? p.note : (p.note !== "Marked Point" ? p.note : "");
+
+                div.innerHTML = `
+                    <div class="point-time">${p.time}</div>
+                    <div class="point-content">
+                        <div class="point-label">${label}</div>
+                        ${note ? `<div class="point-note">${note}</div>` : ''}
+                    </div>
+                `;
                 detailList.appendChild(div);
             });
 
@@ -186,19 +591,47 @@
         }
 
         function deleteCurrentViewed() {
-            if(!confirm("Delete this timeline?")) return;
+            if (!confirm("Delete this timeline permanently?")) return;
             let history = JSON.parse(localStorage.getItem('timelines') || "[]");
             history = history.filter(t => t.id !== viewId);
             localStorage.setItem('timelines', JSON.stringify(history));
             showHome();
         }
 
+        function exportTimeline() {
+            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            const item = history.find(t => t.id === viewId);
+            if (!item) return;
+
+            let content = `Timeline: ${item.name}\nDate: ${item.date}\n`;
+            if (item.duration) {
+                const m = Math.floor(item.duration / 60);
+                const s = (item.duration % 60).toString().padStart(2, '0');
+                content += `Duration: ${m}m ${s}s\n`;
+            }
+            content += `\n---\n\n`;
+
+            item.points.forEach(p => {
+                const label = p.label || "Marker";
+                const note = p.note ? ` - ${p.note}` : "";
+                content += `[${p.time}] ${label}${note}\n`;
+            });
+
+            const dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(content);
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `timeline-${item.name.replace(/\s+/g, '_')}-${item.id}.txt`);
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
         // --- INIT ---
-        // Register Service Worker for Offline capability
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
         renderHistory();
     </script>
 </body>
+
 </html>
