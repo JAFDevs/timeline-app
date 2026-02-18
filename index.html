@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Timeline Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        :root { --bg: #f4f4f5; --card: #ffffff; --text: #18181b; --primary: #2563eb; --danger: #ef4444; }
+        @media (prefers-color-scheme: dark) { :root { --bg: #18181b; --card: #27272a; --text: #f4f4f5; } }
+        
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
+        h1, h2 { margin: 0 0 15px 0; }
+        button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; touch-action: manipulation; }
+        button.secondary { background: var(--card); color: var(--text); border: 1px solid #555; }
+        button.danger { background: var(--danger); }
+        
+        .screen { display: none; flex-direction: column; height: 100%; }
+        .active { display: flex; }
+        
+        /* List Styles */
+        .timeline-card { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .timeline-header { display: flex; justify-content: space-between; align-items: center; }
+        .timestamp { font-size: 0.85em; opacity: 0.7; }
+        
+        /* Recording Styles */
+        #timerDisplay { font-size: 4em; font-weight: 800; text-align: center; margin: 40px 0; font-variant-numeric: tabular-nums; }
+        input[type="text"] { padding: 15px; border-radius: 12px; border: 1px solid #ccc; font-size: 16px; width: 100%; box-sizing: border-box; margin-bottom: 10px; background: var(--card); color: var(--text); }
+        
+        .scroll-area { flex: 1; overflow-y: auto; margin-bottom: 20px; }
+        .point-item { border-left: 2px solid var(--primary); padding-left: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="homeScreen" class="screen active">
+        <h1>My Timelines</h1>
+        <button onclick="startNewSession()">+ Start New Timeline</button>
+        <div id="historyList" class="scroll-area">
+            </div>
+    </div>
+
+    <div id="recordScreen" class="screen">
+        <div id="timerDisplay">00:00</div>
+        <input type="text" id="sessionName" placeholder="Name this session (e.g. Interview)">
+        
+        <div class="scroll-area" id="currentPoints">
+            </div>
+
+        <input type="text" id="pointNote" placeholder="Note (optional)">
+        <button onclick="addPoint()">Mark Point</button>
+        <button class="danger" onclick="stopSession()">Stop & Save</button>
+    </div>
+
+    <div id="detailScreen" class="screen">
+        <h2 id="detailTitle">Title</h2>
+        <div class="scroll-area" id="detailList"></div>
+        <button class="secondary" onclick="showHome()">Back</button>
+        <button class="danger" onclick="deleteCurrentViewed()">Delete Timeline</button>
+    </div>
+
+    <script>
+        // --- DATA & STATE ---
+        let startTime = 0;
+        let timerInterval;
+        let currentPoints = [];
+        let viewId = null; // ID of the timeline currently being viewed
+
+        // --- NAVIGATION ---
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function showHome() {
+            renderHistory();
+            showScreen('homeScreen');
+        }
+
+        // --- RECORDING LOGIC ---
+        function startNewSession() {
+            startTime = Date.now();
+            currentPoints = [];
+            document.getElementById('sessionName').value = "";
+            document.getElementById('currentPoints').innerHTML = "";
+            document.getElementById('timerDisplay').innerText = "00:00";
+            
+            timerInterval = setInterval(updateTimer, 1000);
+            showScreen('recordScreen');
+        }
+
+        function updateTimer() {
+            const diff = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+        }
+
+        function addPoint() {
+            const noteInput = document.getElementById('pointNote');
+            const diff = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            
+            const point = {
+                time: `${m}:${s}`,
+                note: noteInput.value || "Marked Point"
+            };
+            
+            currentPoints.push(point);
+            
+            // Add to UI immediately
+            const div = document.createElement('div');
+            div.className = 'point-item';
+            div.innerHTML = `<strong>${point.time}</strong> - ${point.note}`;
+            document.getElementById('currentPoints').prepend(div);
+            
+            noteInput.value = ""; // Clear input
+        }
+
+        function stopSession() {
+            clearInterval(timerInterval);
+            const name = document.getElementById('sessionName').value || "Untitled Timeline";
+            const date = new Date().toLocaleString();
+            
+            const sessionData = {
+                id: Date.now(),
+                name: name,
+                date: date,
+                points: currentPoints
+            };
+
+            // Save to LocalStorage
+            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            history.unshift(sessionData);
+            localStorage.setItem('timelines', JSON.stringify(history));
+
+            showHome();
+        }
+
+        // --- HISTORY & VIEWING ---
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            list.innerHTML = "";
+            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+
+            if (history.length === 0) {
+                list.innerHTML = "<p style='text-align:center; opacity:0.5;'>No timelines yet.</p>";
+                return;
+            }
+
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'timeline-card';
+                card.onclick = () => viewTimeline(item.id);
+                card.innerHTML = `
+                    <div class="timeline-header">
+                        <strong>${item.name}</strong>
+                        <span class="timestamp">${item.points.length} pts</span>
+                    </div>
+                    <div class="timestamp">${item.date}</div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function viewTimeline(id) {
+            viewId = id;
+            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            const item = history.find(t => t.id === id);
+            
+            document.getElementById('detailTitle').innerText = item.name;
+            const detailList = document.getElementById('detailList');
+            detailList.innerHTML = "";
+
+            item.points.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'point-item';
+                div.innerHTML = `<strong>${p.time}</strong>: ${p.note}`;
+                detailList.appendChild(div);
+            });
+
+            showScreen('detailScreen');
+        }
+
+        function deleteCurrentViewed() {
+            if(!confirm("Delete this timeline?")) return;
+            let history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            history = history.filter(t => t.id !== viewId);
+            localStorage.setItem('timelines', JSON.stringify(history));
+            showHome();
+        }
+
+        // --- INIT ---
+        // Register Service Worker for Offline capability
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+        renderHistory();
+    </script>
+</body>
+</html>
