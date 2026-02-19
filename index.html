@@ -67,7 +67,7 @@
             font-size: 1.5rem;
         }
 
-        /* Buttons */
+        /* ── Buttons ── */
         button {
             background: var(--primary);
             color: white;
@@ -119,7 +119,7 @@
             color: #fff;
         }
 
-        /* Screens */
+        /* ── Screens ── */
         .screen {
             display: none;
             flex-direction: column;
@@ -143,7 +143,7 @@
             }
         }
 
-        /* List Styles */
+        /* ── Timeline Cards (Home) ── */
         .timeline-card {
             background: var(--card);
             padding: 20px;
@@ -171,33 +171,7 @@
             font-size: 1.1em;
         }
 
-        .timestamp {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
-        /* Checkbox for selection */
-        .select-mode .timeline-card {
-            padding-left: 50px;
-            position: relative;
-        }
-
-        .select-checkbox {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            display: none;
-        }
-
-        .select-mode .select-checkbox {
-            display: block;
-        }
-
-
-        /* Recording Styles */
+        /* ── Recording Timer ── */
         #timerDisplay {
             font-size: 5em;
             font-weight: 800;
@@ -237,10 +211,8 @@
             overflow-y: auto;
             margin-bottom: 20px;
             padding-right: 5px;
-            /* For scrollbar */
         }
 
-        /* Custom Scrollbar */
         .scroll-area::-webkit-scrollbar {
             width: 6px;
         }
@@ -250,42 +222,161 @@
             border-radius: 10px;
         }
 
-        .point-item {
+        /* ── Section Label ── */
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* ── Tag Library (Home Screen) ── */
+        .tag-library-card {
             background: var(--card);
             border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 8px;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tag-library-header {
             display: flex;
-            align-items: baseline;
-            gap: 10px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
         }
 
-        .point-time {
-            font-weight: 600;
-            color: var(--primary);
-            font-feature-settings: "tnum";
-            min-width: 45px;
+        .tag-library-body {
+            display: none;
         }
 
-        .point-content {
+        .tag-library-body.open {
+            display: block;
+        }
+
+        .tag-library-chips {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .point-label {
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        .point-note {
+        .library-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 12px;
             font-size: 0.85em;
-            color: var(--text-secondary);
-            margin-top: 2px;
+            font-weight: 500;
+            cursor: default;
         }
 
-        /* Status Badge */
+        .library-tag-chip .remove-tag {
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            line-height: 1;
+        }
+
+        .library-tag-chip .remove-tag:hover {
+            color: var(--danger);
+        }
+
+        .add-tag-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .add-tag-row input {
+            padding: 10px 14px;
+            font-size: 0.9em;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0;
+        }
+
+        .add-tag-row button {
+            width: auto;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        /* ── Tag Picker (Record Screen) ── */
+        .tag-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .picker-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .picker-tag.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .picker-tag-add {
+            background: var(--card);
+            border: 1.5px dashed var(--border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── Tag Chips (Marker Display) ── */
+        .tag-chip {
+            background: var(--bg);
+            color: var(--text-secondary);
+            font-size: 0.75em;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* ── Marker Number ── */
+        .marker-number {
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            min-width: 28px;
+            flex-shrink: 0;
+        }
+
+        /* ── Status Badge ── */
         .paused-badge {
             background: var(--warning);
             color: white;
@@ -295,8 +386,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            vertical-align: middle;
-            margin-left: 10px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -305,12 +394,12 @@
             opacity: 1;
         }
 
-        /* Edit Mode Styles */
+        /* ── Edit Mode ── */
         .edit-inputs {
             display: none;
             flex: 1;
+            flex-direction: column;
             gap: 8px;
-            align-items: center;
         }
 
         .point-item.editing .point-content {
@@ -319,6 +408,73 @@
 
         .point-item.editing .edit-inputs {
             display: flex;
+        }
+
+        /* Inline tag picker inside an open marker */
+        .edit-tag-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .edit-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .edit-tag-chip.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .edit-custom-tag-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .edit-custom-tag-row input {
+            flex: 1;
+            padding: 7px 10px;
+            font-size: 0.85em;
+            border-radius: 8px;
+            margin: 0;
+        }
+
+        .edit-custom-tag-row .add-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            box-shadow: none;
+        }
+
+        .edit-custom-tag-row .add-btn:hover {
+            background: var(--bg);
+        }
+
+        .edit-action-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .icon-btn {
@@ -347,54 +503,18 @@
             background: rgba(239, 68, 68, 0.1);
         }
 
-        .edit-inputs input {
-            padding: 8px;
-            font-size: 0.9em;
-        }
-
-        /* Pulsing Dot */
-        .recording-dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--danger);
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 12px;
-            animation: pulse 1.5s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-            }
-
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
-            }
-
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            }
-        }
-
-        /* Timeline Visualization */
+        /* ── Point Items ── */
         .timeline-container {
             position: relative;
             padding-left: 24px;
         }
 
-        /* Continuous line for the whole list */
         .timeline-container::before {
             content: '';
             position: absolute;
             top: 10px;
             bottom: 10px;
             left: 7px;
-            /* Aligned with dot center */
             width: 2px;
             background: var(--border);
             z-index: 0;
@@ -403,37 +523,76 @@
         .point-item {
             position: relative;
             z-index: 1;
-            /* Existing styles below */
             background: var(--card);
             border: 1px solid var(--border);
             padding: 12px 16px;
             border-radius: 12px;
             margin-bottom: 12px;
-            /* Increased spacing */
             display: flex;
-            align-items: baseline;
+            align-items: flex-start;
             gap: 10px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
         }
 
-        /* Dot on the timeline */
         .point-item::before {
             content: '';
             position: absolute;
-            left: -24px;
-            /* Adjust to sit on the line */
-            top: 20px;
+            left: -22px;
+            top: 18px;
             width: 10px;
             height: 10px;
             background: var(--primary);
             border: 2px solid var(--bg);
-            /* Gap effect */
             border-radius: 50%;
             z-index: 2;
             box-shadow: 0 0 0 1px var(--border);
         }
 
-        /* Empty State */
+        .point-time {
+            font-weight: 600;
+            color: var(--primary);
+            font-feature-settings: "tnum";
+            min-width: 45px;
+            flex-shrink: 0;
+            font-size: 0.9em;
+            padding-top: 2px;
+        }
+
+        .point-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .point-note {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .point-tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            min-height: 20px;
+        }
+
+        /* ── Badge ── */
+        .badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* ── Empty State ── */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -448,31 +607,16 @@
             color: var(--border);
             margin-bottom: 8px;
         }
-
-        /* Badge */
-        .badge {
-            background: var(--primary);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-left: 8px;
-            min-width: 16px;
-            text-align: center;
-            display: inline-block;
-            vertical-align: middle;
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- Home Screen -->
+    <!-- ══════════════════════════════════════
+         HOME SCREEN
+    ══════════════════════════════════════ -->
     <div id="homeScreen" class="screen active">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h1>Timelines</h1>
-        </div>
+        <h1>Timelines</h1>
 
         <button onclick="startNewSession()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -483,20 +627,45 @@
             Start New Timeline
         </button>
 
+        <!-- Tag Library -->
+        <div class="tag-library-card">
+            <div class="tag-library-header" onclick="toggleTagLibrary()">
+                <span style="font-weight:600; font-size:0.95em;">🏷 Tag Library</span>
+                <span id="tagLibraryChevron" style="font-size:0.8em; color:var(--text-secondary);">▼</span>
+            </div>
+            <div class="tag-library-body" id="tagLibraryBody">
+                <div class="tag-library-chips" id="tagLibraryChips"></div>
+                <div class="add-tag-row">
+                    <input type="text" id="newTagInput" placeholder="Add a new tag..."
+                        onkeydown="if(event.key==='Enter') addLibraryTag()">
+                    <button onclick="addLibraryTag()">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Past Timelines</div>
         <div id="historyList" class="scroll-area"></div>
     </div>
 
-    <!-- Record Screen -->
+    <!-- ══════════════════════════════════════
+         RECORD SCREEN
+    ══════════════════════════════════════ -->
     <div id="recordScreen" class="screen">
-        <div style="position:relative;">
-            <div id="timerDisplay">
-                <span class="recording-dot"></span><span id="timerText">00:00</span>
-            </div>
-            <div id="pauseIndicator" class="paused-badge" style="position:absolute; top: 0; right: 0; display:none;">
-                PAUSED</div>
+        <div style="position:relative; text-align:center;">
+            <span id="timerDisplay">00:00</span>
         </div>
 
         <input type="text" id="sessionName" placeholder="Session Name (e.g. Sermon 20)" class="input-group">
+
+        <!-- Tag Picker -->
+        <div class="section-label">Tags for next marker</div>
+        <div class="tag-picker" id="tagPicker"></div>
+
+        <!-- Note Input -->
+        <div style="margin-bottom:10px;">
+            <input type="text" id="pointNote" placeholder="Note (Optional)"
+                style="padding:12px 16px; font-size:0.95em;">
+        </div>
 
         <div
             style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 0 4px;">
@@ -505,17 +674,12 @@
         </div>
         <div class="scroll-area timeline-container" id="currentPoints"></div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="text" id="pointLabel" placeholder="Label (e.g. Bug)" style="flex: 1;">
-            <input type="text" id="pointNote" placeholder="Note (Optional)" style="flex: 2;">
-        </div>
-
-        <button onclick="addPoint()">
+        <button id="markBtn" onclick="addPoint()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
             </svg>
             Mark Point
         </button>
@@ -526,7 +690,9 @@
         </div>
     </div>
 
-    <!-- Detail Screen -->
+    <!-- ══════════════════════════════════════
+         DETAIL SCREEN
+    ══════════════════════════════════════ -->
     <div id="detailScreen" class="screen">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 id="detailTitle" style="margin:0; flex:1;" onclick="renameTimeline()">Title</h2>
@@ -569,20 +735,130 @@
     </div>
 
     <script>
-        // --- DATA & STATE ---
+        // ─── DATA & STATE ─────────────────────────────────────────────
         let startTime = 0;
-        let elapsedTime = 0; // Time accumulated before current resume
+        let elapsedTime = 0;
         let timerInterval;
         let isPaused = false;
         let currentPoints = [];
         let viewId = null;
+        let selectedTags = [];
 
-        // --- NAVIGATION ---
+        const DEFAULT_TAGS = ['Kids on stage', 'Car licenses', 'Low volume'];
+
+        // ─── TAG LIBRARY ─────────────────────────────────────────────
+        function getTagLibrary() {
+            const stored = localStorage.getItem('tagLibrary');
+            if (!stored) {
+                const defaults = [...DEFAULT_TAGS];
+                localStorage.setItem('tagLibrary', JSON.stringify(defaults));
+                return defaults;
+            }
+            return JSON.parse(stored);
+        }
+
+        function saveTagLibrary(tags) {
+            localStorage.setItem('tagLibrary', JSON.stringify(tags));
+        }
+
+        function toggleTagLibrary() {
+            const body = document.getElementById('tagLibraryBody');
+            const chevron = document.getElementById('tagLibraryChevron');
+            const isOpen = body.classList.toggle('open');
+            chevron.textContent = isOpen ? '▲' : '▼';
+            if (isOpen) renderTagLibraryChips();
+        }
+
+        function renderTagLibraryChips() {
+            const tags = getTagLibrary();
+            const container = document.getElementById('tagLibraryChips');
+            container.innerHTML = '';
+            if (tags.length === 0) {
+                container.innerHTML = '<span style="font-size:0.85em; color:var(--text-secondary);">No tags yet. Add some below.</span>';
+                return;
+            }
+            tags.forEach(tag => {
+                const chip = document.createElement('span');
+                chip.className = 'library-tag-chip';
+                chip.innerHTML = `${tag} <span class="remove-tag" onclick="removeLibraryTag('${tag.replace(/'/g, "\\'")}')">×</span>`;
+                container.appendChild(chip);
+            });
+        }
+
+        function addLibraryTag() {
+            const input = document.getElementById('newTagInput');
+            const val = input.value.trim();
+            if (!val) return;
+            const tags = getTagLibrary();
+            if (tags.includes(val)) { input.value = ''; return; }
+            tags.push(val);
+            saveTagLibrary(tags);
+            input.value = '';
+            renderTagLibraryChips();
+        }
+
+        function removeLibraryTag(tag) {
+            const tags = getTagLibrary().filter(t => t !== tag);
+            saveTagLibrary(tags);
+            renderTagLibraryChips();
+        }
+
+        // ─── TAG PICKER (Record Screen) ───────────────────────────────
+        function renderTagPicker() {
+            const tags = getTagLibrary();
+            const container = document.getElementById('tagPicker');
+            container.innerHTML = '';
+            selectedTags = [];
+
+            tags.forEach(tag => {
+                const chip = document.createElement('span');
+                chip.className = 'picker-tag';
+                chip.textContent = tag;
+                chip.dataset.tag = tag;
+                chip.onclick = () => togglePickerTag(chip, tag);
+                container.appendChild(chip);
+            });
+
+            // Add new tag inline
+            const addChip = document.createElement('span');
+            addChip.className = 'picker-tag-add';
+            addChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> New tag`;
+            addChip.onclick = addTagInline;
+            container.appendChild(addChip);
+        }
+
+        function togglePickerTag(chip, tag) {
+            if (chip.classList.toggle('selected')) {
+                selectedTags.push(tag);
+            } else {
+                selectedTags = selectedTags.filter(t => t !== tag);
+            }
+        }
+
+        function addTagInline() {
+            const name = prompt('New tag name:');
+            if (!name || !name.trim()) return;
+            const tag = name.trim();
+            const tags = getTagLibrary();
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+                saveTagLibrary(tags);
+            }
+            renderTagPicker();
+            // Auto-select the newly added tag
+            const allChips = document.querySelectorAll('.picker-tag');
+            allChips.forEach(c => {
+                if (c.dataset.tag === tag) {
+                    c.classList.add('selected');
+                    selectedTags.push(tag);
+                }
+            });
+        }
+
+        // ─── NAVIGATION ──────────────────────────────────────────────
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            setTimeout(() => {
-                document.getElementById(id).classList.add('active');
-            }, 50); // Slight delay for animation reset
+            setTimeout(() => { document.getElementById(id).classList.add('active'); }, 50);
         }
 
         function showHome() {
@@ -590,20 +866,22 @@
             showScreen('homeScreen');
         }
 
-        // --- RECORDING LOGIC ---
+        // ─── RECORDING LOGIC ─────────────────────────────────────────
         function startNewSession() {
             startTime = Date.now();
             elapsedTime = 0;
             isPaused = false;
             currentPoints = [];
 
-            document.getElementById('sessionName').value = "";
-            document.getElementById('currentPoints').innerHTML = "";
-            document.getElementById('timerText').innerText = "00:00";
-            document.getElementById('timerDisplay').style.opacity = "1";
-            document.getElementById('pauseBtn').innerText = "Pause";
-            document.getElementById('markerCountBadge').innerText = "0"; // Reset badge
-            document.getElementById('pauseIndicator').classList.remove('visible');
+            document.getElementById('sessionName').value = '';
+            document.getElementById('currentPoints').innerHTML = '';
+            document.getElementById('timerDisplay').innerText = '00:00';
+            document.getElementById('timerDisplay').style.opacity = '1';
+            document.getElementById('pauseBtn').innerText = 'Pause';
+            document.getElementById('markerCountBadge').innerText = '0';
+            document.getElementById('pointNote').value = '';
+
+            renderTagPicker();
 
             clearInterval(timerInterval);
             timerInterval = setInterval(updateTimer, 1000);
@@ -612,56 +890,73 @@
 
         function togglePause() {
             if (isPaused) {
-                // RESUME
-                startTime = Date.now(); // Reset start time to now
+                startTime = Date.now();
                 timerInterval = setInterval(updateTimer, 1000);
-                document.getElementById('pauseBtn').innerText = "Pause";
-                document.getElementById('timerDisplay').style.opacity = "1";
-                // document.getElementById('pauseIndicator').style.display = 'none';
+                document.getElementById('pauseBtn').innerText = 'Pause';
+                document.getElementById('timerDisplay').style.opacity = '1';
             } else {
-                // PAUSE
                 clearInterval(timerInterval);
-                elapsedTime += Date.now() - startTime; // Accumulate elapsed time
-                document.getElementById('pauseBtn').innerText = "Resume";
-                document.getElementById('timerDisplay').style.opacity = "0.6";
-                // document.getElementById('pauseIndicator').style.display = 'block'; 
+                elapsedTime += Date.now() - startTime;
+                document.getElementById('pauseBtn').innerText = 'Resume';
+                document.getElementById('timerDisplay').style.opacity = '0.6';
             }
             isPaused = !isPaused;
         }
 
         function getTotalSeconds() {
-            if (isPaused) {
-                return Math.floor(elapsedTime / 1000);
-            }
+            if (isPaused) return Math.floor(elapsedTime / 1000);
             return Math.floor((elapsedTime + (Date.now() - startTime)) / 1000);
         }
 
-        // --- EDITING LOGIC ---
+        function updateTimer() {
+            const diff = getTotalSeconds();
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+        }
+
+        // ─── POINT RENDERING ─────────────────────────────────────────
         function getPointHtml(point, index) {
-            // point.tags is an array of strings
             const tags = point.tags && point.tags.length > 0 ? point.tags : [];
-            const tagsHtml = tags.map(t => `<span class="tag-chip">${t}</span>`).join('');
-            const note = point.note || "";
+            const legacyTag = (!tags.length && point.label && point.label !== 'Marker') ? [point.label] : [];
+            const displayTags = tags.length ? tags : legacyTag;
+            const tagsHtml = displayTags.map(t => `<span class="tag-chip">${t}</span>`).join('');
+            const note = point.note || '';
+
+            // Build the inline tag picker for edit mode
+            const libraryTags = getTagLibrary();
+            const allEditTags = [...new Set([...libraryTags, ...displayTags])];
+            const editTagChips = allEditTags.map(t => {
+                const sel = displayTags.includes(t) ? ' selected' : '';
+                const escapedTag = t.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                return `<span class="edit-tag-chip${sel}" data-tag="${escapedTag}" onclick="toggleInlineTag(this)">${t}</span>`;
+            }).join('');
 
             return `
                 <div class="marker-number">#${index}</div>
                 <div class="point-time">${point.time}</div>
                 <div class="point-content">
-                    <div class="point-tags" style="margin-bottom:2px;">${tagsHtml}</div>
+                    <div class="point-tags-row">${tagsHtml}</div>
                     ${note ? `<div class="point-note">${note}</div>` : ''}
                 </div>
                 <div class="edit-inputs" onclick="event.stopPropagation()">
-                    <input type="text" class="edit-tags" value="${tags.join(', ')}" placeholder="Tags (comma sep)">
-                    <input type="text" class="edit-note" value="${note}" placeholder="Note">
-                    <button class="icon-btn" onclick="savePoint(${point.id})" style="color:var(--success)">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </button>
-                    <button class="icon-btn danger-icon" onclick="deletePoint(${point.id})" style="color:var(--danger)">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    </button>
-                    <button class="icon-btn" onclick="cancelEdit(${point.id})" style="color:var(--text-secondary)">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
+                    <div class="edit-tag-picker">${editTagChips}</div>
+                    <div class="edit-custom-tag-row">
+                        <input type="text" class="edit-custom-input" placeholder="Type a custom tag...">
+                        <button class="add-btn" onclick="addCustomTagToEdit(${point.id})">+ Add</button>
+                    </div>
+                    <div class="edit-action-row">
+                        <input type="text" class="edit-note" value="${note}" placeholder="Note (optional)" style="flex:1;">
+                        <button class="icon-btn" onclick="savePoint(${point.id})" style="color:var(--success); flex-shrink:0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </button>
+                        <button class="icon-btn danger-icon" onclick="deletePoint(${point.id})" style="color:var(--danger); flex-shrink:0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                        <button class="icon-btn" onclick="cancelEdit(${point.id})" style="color:var(--text-secondary); flex-shrink:0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
                 </div>
             `;
         }
@@ -669,160 +964,182 @@
         function editPoint(id) {
             const el = document.getElementById(`point-${id}`);
             if (el) {
-                // Close others
+                // Auto-save any currently editing marker before switching
                 document.querySelectorAll('.point-item.editing').forEach(item => {
-                    if (item.id !== `point-${id}`) item.classList.remove('editing');
+                    if (item.id !== `point-${id}`) {
+                        const prevId = parseInt(item.id.replace('point-', ''));
+                        savePoint(prevId);
+                    }
                 });
                 el.classList.add('editing');
             }
         }
 
+        // Click anywhere outside a marker → auto-save it
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.point-item')) return;
+            const editing = document.querySelector('.point-item.editing');
+            if (!editing) return;
+            const id = parseInt(editing.id.replace('point-', ''));
+            savePoint(id);
+        });
+
         function cancelEdit(id) {
             const el = document.getElementById(`point-${id}`);
             if (el) el.classList.remove('editing');
-            event.stopPropagation(); // prevent re-triggering edit on container click if bubbling happens (though button is inside stopsProp container, this safe)
+            event.stopPropagation();
+        }
+
+        function toggleInlineTag(chip) {
+            chip.classList.toggle('selected');
+        }
+
+        function addCustomTagToEdit(pointId) {
+            const el = document.getElementById(`point-${pointId}`);
+            if (!el) return;
+            const input = el.querySelector('.edit-custom-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            // Check if chip already exists in the picker
+            const picker = el.querySelector('.edit-tag-picker');
+            const existing = [...picker.querySelectorAll('.edit-tag-chip')].find(c => c.dataset.tag === val);
+            if (existing) {
+                existing.classList.add('selected');
+                input.value = '';
+                return;
+            }
+
+            // Add chip to the picker and select it
+            const chip = document.createElement('span');
+            chip.className = 'edit-tag-chip selected';
+            chip.dataset.tag = val;
+            chip.textContent = val;
+            chip.onclick = () => chip.classList.toggle('selected');
+            picker.appendChild(chip);
+            input.value = '';
+
+            // Ask about adding to library
+            const lib = getTagLibrary();
+            if (!lib.includes(val)) {
+                if (confirm(`Add "${val}" to your Tag Library for future use?`)) {
+                    lib.push(val);
+                    saveTagLibrary(lib);
+                    // Refresh the record-screen tag picker, preserving current selections
+                    const prevSelected = [...selectedTags];
+                    renderTagPicker();
+                    document.querySelectorAll('#tagPicker .picker-tag').forEach(c => {
+                        if (prevSelected.includes(c.dataset.tag)) {
+                            c.classList.add('selected');
+                        }
+                    });
+                    selectedTags = prevSelected;
+                }
+            }
         }
 
         function savePoint(id) {
             const el = document.getElementById(`point-${id}`);
             if (!el) return;
 
-            const tagsInput = el.querySelector('.edit-tags').value;
-            const newTags = tagsInput.split(',').map(t => t.trim()).filter(t => t);
+            // Read selected chips
+            const newTags = [...el.querySelectorAll('.edit-tag-chip.selected')].map(c => c.dataset.tag);
             const newNote = el.querySelector('.edit-note').value.trim();
 
             let updatedPoint = null;
 
-            // Update Data
             if (document.getElementById('recordScreen').classList.contains('active')) {
-                // In Recording
                 const p = currentPoints.find(item => item.id === id);
-                if (p) {
-                    p.tags = newTags;
-                    p.note = newNote;
-                    updatedPoint = p;
-                }
+                if (p) { p.tags = newTags; p.note = newNote; updatedPoint = p; }
             } else if (viewId) {
-                // In History
-                const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+                const history = JSON.parse(localStorage.getItem('timelines') || '[]');
                 const timeline = history.find(t => t.id === viewId);
                 if (timeline) {
                     const p = timeline.points.find(item => item.id === id);
                     if (p) {
-                        p.tags = newTags;
-                        p.note = newNote;
-                        updatedPoint = p;
+                        p.tags = newTags; p.note = newNote; updatedPoint = p;
                         localStorage.setItem('timelines', JSON.stringify(history));
                     }
                 }
             }
 
             if (updatedPoint) {
-                // Re-render the specific point HTML to update tags and numbering logic visualization
-                // We need to know the index. 
-                let index = -1;
+                let index;
                 if (document.getElementById('recordScreen').classList.contains('active')) {
-                    // currentPoints is reversed visual order (newest top), but index should be chronological?
-                    // The user likely wants #1 to be the first event.
-                    // In currentPoints array: index 0 is newest (top). So #Count is 0, #1 is last.
-                    // Let's stick to: chronological order = index + 1 if sorted by time.
-                    // currentPoints stores: [newest, ..., oldest] because of .unshift()?
-                    // Wait, let's check addPoint logic. 
-                    // addPoint uses .unshift(). So index 0 is newest. 
-                    // chronological index = total - current_index
                     index = currentPoints.length - currentPoints.indexOf(updatedPoint);
                 } else {
-                    // History view logic.
-                    const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+                    const history = JSON.parse(localStorage.getItem('timelines') || '[]');
                     const timeline = history.find(t => t.id === viewId);
-                    index = timeline.points.findIndex(p => p.id === id) + 1;
+                    index = (timeline ? timeline.points.findIndex(p => p.id === id) : 0) + 1;
                 }
-
                 el.innerHTML = getPointHtml(updatedPoint, index);
                 el.classList.remove('editing');
             }
         }
 
-
-        function updateTimer() {
-            const diff = getTotalSeconds();
-            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-            const s = (diff % 60).toString().padStart(2, '0');
-            document.getElementById('timerText').innerText = `${m}:${s}`;
-        }
-
+        // ─── ADD POINT ───────────────────────────────────────────────
         function addPoint() {
-            const labelInput = document.getElementById('pointLabel');
             const noteInput = document.getElementById('pointNote');
-
             const diff = getTotalSeconds();
             const m = Math.floor(diff / 60).toString().padStart(2, '0');
             const s = (diff % 60).toString().padStart(2, '0');
-
-            // Allow default label if empty
-            const label = labelInput.value.trim() || "Marker";
-            const note = noteInput.value.trim();
 
             const point = {
-                id: Date.now(), // Unique ID for editing
+                id: Date.now(),
                 time: `${m}:${s}`,
-                label: label,
-                note: note // Can be empty
+                tags: [...selectedTags],
+                note: noteInput.value.trim()
             };
 
-            currentPoints.unshift(point); // Add to start of array for history logic consistency
-
-            // Only vibrate if supported
+            currentPoints.unshift(point);
             if (navigator.vibrate) navigator.vibrate(50);
-
-            // Update badge
             document.getElementById('markerCountBadge').innerText = currentPoints.length;
 
-            // Add to UI immediately
             const div = document.createElement('div');
             div.className = 'point-item';
             div.id = `point-${point.id}`;
             div.onclick = () => editPoint(point.id);
-            div.innerHTML = getPointHtml(point);
+            div.innerHTML = getPointHtml(point, currentPoints.length);
             document.getElementById('currentPoints').prepend(div);
 
-            // Clear inputs, keep focus on label for rapid entry or switch? 
-            // Better to clear note, maybe keep label? Let's clear both for now.
-            labelInput.value = "";
-            noteInput.value = "";
+            // Clear selections & note
+            noteInput.value = '';
+            selectedTags = [];
+            document.querySelectorAll('.picker-tag.selected').forEach(c => c.classList.remove('selected'));
+
+            // Brief flash on the mark button
+            const btn = document.getElementById('markBtn');
+            btn.style.background = 'var(--success)';
+            setTimeout(() => { btn.style.background = ''; }, 300);
         }
 
+        // ─── STOP SESSION ─────────────────────────────────────────────
         function stopSession() {
             clearInterval(timerInterval);
-            // Ensure we capture final time accurately
-            if (!isPaused) {
-                elapsedTime += Date.now() - startTime;
-            }
+            if (!isPaused) elapsedTime += Date.now() - startTime;
 
-            const name = document.getElementById('sessionName').value.trim() || "Untitled Timeline";
+            const name = document.getElementById('sessionName').value.trim() || 'Untitled Timeline';
             const date = new Date().toLocaleString();
 
             const sessionData = {
                 id: Date.now(),
                 name: name,
                 date: date,
-                duration: getTotalSeconds(), // Save total duration in seconds
+                duration: getTotalSeconds(),
                 points: currentPoints
             };
 
-            // Save to LocalStorage
-            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            const history = JSON.parse(localStorage.getItem('timelines') || '[]');
             history.unshift(sessionData);
             localStorage.setItem('timelines', JSON.stringify(history));
-
             showHome();
         }
 
-        // --- HISTORY & VIEWING ---
+        // ─── HISTORY & VIEWING ────────────────────────────────────────
         function renderHistory() {
             const list = document.getElementById('historyList');
-            list.innerHTML = "";
-            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            list.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem('timelines') || '[]');
 
             if (history.length === 0) {
                 list.innerHTML = `
@@ -842,8 +1159,7 @@
                 card.className = 'timeline-card';
                 card.onclick = () => viewTimeline(item.id);
 
-                // Format duration for display if available (legacy support)
-                let durationStr = "";
+                let durationStr = '';
                 if (item.duration) {
                     const m = Math.floor(item.duration / 60);
                     const s = (item.duration % 60).toString().padStart(2, '0');
@@ -866,113 +1182,49 @@
 
         function viewTimeline(id) {
             viewId = id;
-            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            const history = JSON.parse(localStorage.getItem('timelines') || '[]');
             const item = history.find(t => t.id === id);
-
             if (!item) return;
 
             document.getElementById('detailTitle').innerText = item.name;
             const detailList = document.getElementById('detailList');
-            detailList.innerHTML = "";
+            detailList.innerHTML = '';
 
-            // Assign IDs to legacy points if missing (persist them later if modified, or just for view now)
-            // Ideally we should persist IDs back to storage if we generated them, 
-            // but for simplicity let's just use existing IDs or generate temp ones.
-            // Actually, let's update storage if we find missing IDs so editing works reliably.
             let pointsUpdated = false;
-
-            // Points are stored NEWEST first (from unshift).
-            // We want to display them Newest First usually in UI?
-            // Yes home/record screen shows newest at top.
-            // Numbering: Oldest = #1. Newest = #Count.
-            // So index in array 0 (Newest) should be #Count.
-            // index Last (Oldest) should be #1.
             const total = item.points.length;
 
             item.points.forEach((p, i) => {
-                if (!p.id) {
-                    p.id = Date.now() + Math.random(); // Ensure uniqueness
-                    pointsUpdated = true;
-                }
+                if (!p.id) { p.id = Date.now() + Math.random(); pointsUpdated = true; }
 
                 const div = document.createElement('div');
                 div.className = 'point-item';
                 div.id = `point-${p.id}`;
                 div.onclick = () => editPoint(p.id);
-                // Chronological number = Total - Index
                 div.innerHTML = getPointHtml(p, total - i);
                 detailList.appendChild(div);
             });
 
-            if (pointsUpdated) {
-                localStorage.setItem('timelines', JSON.stringify(history));
-            }
-
+            if (pointsUpdated) localStorage.setItem('timelines', JSON.stringify(history));
             showScreen('detailScreen');
         }
 
         function deleteCurrentViewed() {
-            if (!confirm("Delete this timeline permanently?")) return;
-            let history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            if (!confirm('Delete this timeline permanently?')) return;
+            let history = JSON.parse(localStorage.getItem('timelines') || '[]');
             history = history.filter(t => t.id !== viewId);
             localStorage.setItem('timelines', JSON.stringify(history));
             showHome();
         }
 
-        function exportTimeline() {
-            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
-            const item = history.find(t => t.id === viewId);
-            if (!item) return;
-
-            let content = `Timeline: ${item.name}\nDate: ${item.date}\n`;
-            if (item.duration) {
-                const m = Math.floor(item.duration / 60);
-                const s = (item.duration % 60).toString().padStart(2, '0');
-                content += `Duration: ${m}m ${s}s\n`;
-            }
-            content += `\n---\n\n`;
-
-            // Create a chronological copy
-            const chronological = [...item.points].reverse();
-
-            chronological.forEach((p, i) => {
-                const tagsStr = (p.tags && p.tags.length > 0) ? `[${p.tags.join(', ')}] ` : "";
-                const note = p.note ? ` - ${p.note}` : "";
-
-                // Legacy support for 'label' if 'tags' missing
-                const labelLegacy = p.label ? `[${p.label}] ` : "";
-                const finalTagStr = tagsStr || labelLegacy;
-
-                content += `#${i + 1} ${p.time} ${finalTagStr}${note}\n`;
-            });
-
-            const dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(content);
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", `timeline-${item.name.replace(/\s+/g, '_')}-${item.id}.txt`);
-            document.body.appendChild(downloadAnchorNode); // required for firefox
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        // --- ACTIONS ---
+        // ─── DELETE POINT ─────────────────────────────────────────────
         function deletePoint(id) {
-            if (!confirm("Delete this marker?")) return;
+            if (!confirm('Delete this marker?')) return;
 
-            // Remove from UI
-            const el = document.getElementById(`point-${id}`);
-            if (el) el.remove();
-
-            // Remove from Data
-            if (document.getElementById('recordScreen').classList.contains('active')) {
-                currentPoints = currentPoints.filter(p => p.id !== id);
-                document.getElementById('markerCountBadge').innerText = currentPoints.length;
-
-                // Re-render list to fix numbering
-                const container = document.getElementById('currentPoints');
-                container.innerHTML = "";
-                const total = currentPoints.length;
-                currentPoints.forEach((p, i) => {
+            const reRender = (points, containerId) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                const total = points.length;
+                points.forEach((p, i) => {
                     const div = document.createElement('div');
                     div.className = 'point-item';
                     div.id = `point-${p.id}`;
@@ -980,48 +1232,39 @@
                     div.innerHTML = getPointHtml(p, total - i);
                     container.appendChild(div);
                 });
+            };
 
+            if (document.getElementById('recordScreen').classList.contains('active')) {
+                currentPoints = currentPoints.filter(p => p.id !== id);
+                document.getElementById('markerCountBadge').innerText = currentPoints.length;
+                reRender(currentPoints, 'currentPoints');
             } else if (viewId) {
-                let history = JSON.parse(localStorage.getItem('timelines') || "[]");
+                let history = JSON.parse(localStorage.getItem('timelines') || '[]');
                 let timeline = history.find(t => t.id === viewId);
                 if (timeline) {
                     timeline.points = timeline.points.filter(p => p.id !== id);
                     localStorage.setItem('timelines', JSON.stringify(history));
-
-                    // Re-render detail list
-                    const container = document.getElementById('detailList');
-                    container.innerHTML = "";
-                    const total = timeline.points.length;
-                    timeline.points.forEach((p, i) => {
-                        const div = document.createElement('div');
-                        div.className = 'point-item';
-                        div.id = `point-${p.id}`;
-                        div.onclick = () => editPoint(p.id);
-                        div.innerHTML = getPointHtml(p, total - i);
-                        container.appendChild(div);
-                    });
+                    reRender(timeline.points, 'detailList');
                 }
             }
         }
 
+        // ─── RENAME ────────────────────────────────────────────────────
         function renameTimeline() {
-            let history = JSON.parse(localStorage.getItem('timelines') || "[]");
+            let history = JSON.parse(localStorage.getItem('timelines') || '[]');
             let timeline = history.find(t => t.id === viewId);
             if (!timeline) return;
 
-            const newName = prompt("Rename Timeline:", timeline.name);
-            if (newName && newName.trim() !== "") {
+            const newName = prompt('Rename Timeline:', timeline.name);
+            if (newName && newName.trim()) {
                 timeline.name = newName.trim();
                 localStorage.setItem('timelines', JSON.stringify(history));
                 document.getElementById('detailTitle').innerText = timeline.name;
             }
         }
 
-        function shareTimeline() {
-            const history = JSON.parse(localStorage.getItem('timelines') || "[]");
-            const item = history.find(t => t.id === viewId);
-            if (!item) return;
-
+        // ─── SHARE ─────────────────────────────────────────────────────
+        function buildExportText(item) {
             let content = `Timeline: ${item.name}\nDate: ${item.date}\n`;
             if (item.duration) {
                 const m = Math.floor(item.duration / 60);
@@ -1029,42 +1272,43 @@
                 content += `Duration: ${m}m ${s}s\n`;
             }
             content += `\n---\n\n`;
-
-            item.points.forEach((p, index) => {
-                // For export, we likely want chronological? item.points is saved in some order?
-                // Wait, addPoint does unshift. So item.points is [newest, ..., oldest].
-                // Usually exports are chronological (oldest to newest).
-                // Let's reverse for export if we want time 0:00 -> end.
+            const chrono = [...item.points].reverse();
+            chrono.forEach((p, i) => {
+                const tags = p.tags && p.tags.length ? `[${p.tags.join(', ')}] ` : (p.label && p.label !== 'Marker' ? `[${p.label}] ` : '');
+                const note = p.note ? ` - ${p.note}` : '';
+                content += `#${i + 1} ${p.time} ${tags}${note}\n`;
             });
+            return content;
+        }
 
-            // Create a chronological copy
-            const chronological = [...item.points].reverse();
-
-            chronological.forEach((p, i) => {
-                const tagsStr = (p.tags && p.tags.length > 0) ? `[${p.tags.join(', ')}] ` : "";
-                const note = p.note ? ` - ${p.note}` : "";
-
-                // Legacy support for 'label' if 'tags' missing
-                const labelLegacy = p.label ? `[${p.label}] ` : "";
-                const finalTagStr = tagsStr || labelLegacy;
-
-                content += `#${i + 1} ${p.time} ${finalTagStr}${note}\n`;
-            });
-
+        function shareTimeline() {
+            const history = JSON.parse(localStorage.getItem('timelines') || '[]');
+            const item = history.find(t => t.id === viewId);
+            if (!item) return;
+            const content = buildExportText(item);
             if (navigator.share) {
-                navigator.share({
-                    title: item.name,
-                    text: content
-                }).catch(console.error);
+                navigator.share({ title: item.name, text: content }).catch(console.error);
             } else {
-                alert("Sharing is not supported on this device/browser. Please use Export.");
+                alert('Sharing not supported on this device. Use Export instead.');
             }
         }
 
-        // --- INIT ---
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+        function exportTimeline() {
+            const history = JSON.parse(localStorage.getItem('timelines') || '[]');
+            const item = history.find(t => t.id === viewId);
+            if (!item) return;
+            const content = buildExportText(item);
+            const dataStr = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+            const a = document.createElement('a');
+            a.setAttribute('href', dataStr);
+            a.setAttribute('download', `timeline-${item.name.replace(/\s+/g, '_')}-${item.id}.txt`);
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
         }
+
+        // ─── INIT ───────────────────────────────────────────────────────
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
         renderHistory();
     </script>
 </body>
