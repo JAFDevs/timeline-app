@@ -916,6 +916,21 @@
             return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
         }
 
+        // Always includes hours (for export)
+        function formatTimeFull(totalSeconds) {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        // Parse a stored time string (H:MM:SS or MM:SS) back to seconds
+        function parseTimeStr(str) {
+            const parts = str.split(':').map(Number);
+            if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            return parts[0] * 60 + parts[1];
+        }
+
         function updateTimer() {
             document.getElementById('timerDisplay').innerText = formatTime(getTotalSeconds());
         }
@@ -1266,14 +1281,15 @@
         function buildExportText(item) {
             let content = `Timeline: ${item.name}\nDate: ${item.date}\n`;
             if (item.duration) {
-                content += `Duration: ${formatTime(item.duration)}\n`;
+                content += `Duration: ${formatTimeFull(item.duration)}\n`;
             }
             content += `\n---\n\n`;
             const chrono = [...item.points].reverse();
             chrono.forEach((p, i) => {
                 const tags = p.tags && p.tags.length ? `[${p.tags.join(', ')}] ` : (p.label && p.label !== 'Marker' ? `[${p.label}] ` : '');
                 const note = p.note ? ` - ${p.note}` : '';
-                content += `#${i + 1} ${p.time} ${tags}${note}\n`;
+                const timeStr = formatTimeFull(parseTimeStr(p.time));
+                content += `#${i + 1} ${timeStr} ${tags}${note}\n`;
             });
             return content;
         }
