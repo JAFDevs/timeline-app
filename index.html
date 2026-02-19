@@ -908,11 +908,16 @@
             return Math.floor((elapsedTime + (Date.now() - startTime)) / 1000);
         }
 
+        // ─── TIME FORMATTING ─────────────────────────────────────────
+        function formatTime(totalSeconds) {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
+        }
+
         function updateTimer() {
-            const diff = getTotalSeconds();
-            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-            const s = (diff % 60).toString().padStart(2, '0');
-            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+            document.getElementById('timerDisplay').innerText = formatTime(getTotalSeconds());
         }
 
         // ─── POINT RENDERING ─────────────────────────────────────────
@@ -1080,13 +1085,9 @@
         // ─── ADD POINT ───────────────────────────────────────────────
         function addPoint() {
             const noteInput = document.getElementById('pointNote');
-            const diff = getTotalSeconds();
-            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-            const s = (diff % 60).toString().padStart(2, '0');
-
             const point = {
                 id: Date.now(),
-                time: `${m}:${s}`,
+                time: formatTime(getTotalSeconds()),
                 tags: [...selectedTags],
                 note: noteInput.value.trim()
             };
@@ -1161,9 +1162,7 @@
 
                 let durationStr = '';
                 if (item.duration) {
-                    const m = Math.floor(item.duration / 60);
-                    const s = (item.duration % 60).toString().padStart(2, '0');
-                    durationStr = `${m}m ${s}s`;
+                    durationStr = formatTime(item.duration);
                 }
 
                 card.innerHTML = `
@@ -1267,9 +1266,7 @@
         function buildExportText(item) {
             let content = `Timeline: ${item.name}\nDate: ${item.date}\n`;
             if (item.duration) {
-                const m = Math.floor(item.duration / 60);
-                const s = (item.duration % 60).toString().padStart(2, '0');
-                content += `Duration: ${m}m ${s}s\n`;
+                content += `Duration: ${formatTime(item.duration)}\n`;
             }
             content += `\n---\n\n`;
             const chrono = [...item.points].reverse();
